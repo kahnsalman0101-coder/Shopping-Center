@@ -1,85 +1,91 @@
-import React from 'react';
-import Slider from '../components/Slider';
-import WinterSlider from '../components/WinterSlider';
-import Main from '../components/Main';
+import React, { useState } from 'react';
 import Product from '../components/Product';
 import '../style/Home.css';
 
 function Home() {
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('featured');
+
+  const handleOfferClick = (discount) => {
+    alert(`Applying ${discount} discount!`);
+    // Add your discount logic here
+  };
+
   return (
     <div className="home-page">
-      {/* Hero Section */}
-      <section className="hero-section">
-        <Slider />
-      </section>
-      
-      {/* Winter Collection */}
-      <section className="winter-section">
-        <div className="section-header">
-          <h2 className="section-title">❄️ Winter Collection 2025</h2>
-          <p className="section-subtitle">Stay warm in style with our premium winter wear</p>
+      {/* Hero Banner */}
+     
+
+      {/* Special Offers Buttons */}
+      <div className="offers-section">
+        <h2>Special Offers</h2>
+        <div className="offer-buttons">
+          <button 
+            className="offer-btn"
+            onClick={() => handleOfferClick('20%')}
+          >
+            20% OFF
+          </button>
+          <button 
+            className="offer-btn"
+            onClick={() => handleOfferClick('30%')}
+          >
+            30% OFF
+          </button>
+          <button 
+            className="offer-btn"
+            onClick={() => handleOfferClick('40%')}
+          >
+            40% OFF
+          </button>
+          <button 
+            className="offer-btn"
+            onClick={() => handleOfferClick('50%')}
+          >
+            50% OFF
+          </button>
         </div>
-        <WinterSlider />
-      </section>
-      
-      {/* Featured Products */}
-      <section className="featured-section">
-        <div className="section-header">
-          <h2 className="section-title">⭐ Featured Products</h2>
-          <p className="section-subtitle">Our handpicked selection of premium fashion</p>
+      </div>
+
+      {/* Filter & Sort Dropdowns */}
+      <div className="filter-sort-section">
+        <div className="dropdown-container">
+          <div className="dropdown-group">
+            <label>Filter:</label>
+            <select 
+              className="dropdown"
+              value={activeFilter}
+              onChange={(e) => setActiveFilter(e.target.value)}
+            >
+              <option value="all">All Products</option>
+              <option value="new">New Arrivals</option>
+              <option value="sale">On Sale</option>
+              <option value="men">Men's Wear</option>
+              <option value="women">Women's Wear</option>
+              <option value="kids">Kids & Teens</option>
+            </select>
+          </div>
+
+          <div className="dropdown-group">
+            <label>Sort by:</label>
+            <select 
+              className="dropdown"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="featured">Featured</option>
+              <option value="newest">Newest</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="popular">Most Popular</option>
+            </select>
+          </div>
         </div>
-        <Main />
-      </section>
-      
-      {/* All Products */}
-      <section className="all-products-section">
-        <div className="section-header">
-          <h2 className="section-title">✨ Explore All Collections</h2>
-          <p className="section-subtitle">Discover something for every occasion</p>
-        </div>
-        <Product />
-      </section>
-      
-      {/* Newsletter Section */}
-      <section className="newsletter-section">
-        <div className="newsletter-container">
-          <h2>📧 Stay in Style</h2>
-          <p>Subscribe to get updates on new arrivals, sales, and exclusive offers</p>
-          <form className="newsletter-form">
-            <input 
-              type="email" 
-              placeholder="Enter your email address" 
-              className="newsletter-input"
-            />
-            <button type="submit" className="newsletter-btn">
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </section>
-      
-      {/* Features Banner */}
-      <div className="features-banner">
-        <div className="feature-item">
-          <div className="feature-icon">🚚</div>
-          <h3>Free Shipping</h3>
-          <p>On orders over Rs 5000</p>
-        </div>
-        <div className="feature-item">
-          <div className="feature-icon">↩️</div>
-          <h3>Easy Returns</h3>
-          <p>30-day return policy</p>
-        </div>
-        <div className="feature-item">
-          <div className="feature-icon">🔒</div>
-          <h3>Secure Payment</h3>
-          <p>100% secure transactions</p>
-        </div>
-        <div className="feature-item">
-          <div className="feature-icon">💖</div>
-          <h3>24/7 Support</h3>
-          <p>We're always here to help</p>
-        </div>
+      </div>
+
+      {/* Products Section */}
+      <div className="products-section">
+        <Product filter={activeFilter} sort={sortBy} />
       </div>
     </div>
   );

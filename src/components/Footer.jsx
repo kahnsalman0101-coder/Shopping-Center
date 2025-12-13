@@ -23,7 +23,7 @@ function Footer() {
       <div className="footer-top">
         <div className="footer-section">
           <div className="footer-logo">
-            <h3>FashionHub</h3>
+            <h3>ASIM JOFA</h3>
             <p className="footer-tagline">Where Style Meets Elegance</p>
           </div>
           <p className="footer-description">
@@ -117,7 +117,7 @@ function Footer() {
 
       <div className="footer-bottom">
         <div className="copyright">
-          <p>&copy; {currentYear} FashionHub. All rights reserved.</p>
+          <p>&copy; {currentYear} Asim Jofa. All rights reserved.</p>
         </div>
         
         <div className="footer-policies">
