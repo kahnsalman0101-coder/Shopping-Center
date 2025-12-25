@@ -1,94 +1,106 @@
-import React, { useState } from 'react';
-import Product from '../components/Product';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import ProductsGrid from '../components/ProductsGrid';
+import CategoryFilter from '../components/CategoryFilter';
 import '../style/Home.css';
 
-function Home() {
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [sortBy, setSortBy] = useState('featured');
+const Home = ({ sale = false }) => {
+  const { category } = useParams();
+  const [filteredCategory, setFilteredCategory] = useState(category || 'all');
+  const [isOnSale, setIsOnSale] = useState(sale);
 
-  const handleOfferClick = (discount) => {
-    alert(`Applying ${discount} discount!`);
-    // Add your discount logic here
+  useEffect(() => {
+    if (category) {
+      setFilteredCategory(category);
+    }
+    setIsOnSale(sale);
+  }, [category, sale]);
+
+  const handleCategoryChange = (category) => {
+    setFilteredCategory(category);
   };
-
   return (
     <div className="home-page">
-      {/* Hero Banner */}
-     
-
-      {/* Special Offers Buttons */}
-      <div className="offers-section">
-        <h2>Special Offers</h2>
-        <div className="offer-buttons">
-          <button 
-            className="offer-btn"
-            onClick={() => handleOfferClick('20%')}
-          >
-            20% OFF
-          </button>
-          <button 
-            className="offer-btn"
-            onClick={() => handleOfferClick('30%')}
-          >
-            30% OFF
-          </button>
-          <button 
-            className="offer-btn"
-            onClick={() => handleOfferClick('40%')}
-          >
-            40% OFF
-          </button>
-          <button 
-            className="offer-btn"
-            onClick={() => handleOfferClick('50%')}
-          >
-            50% OFF
-          </button>
-        </div>
-      </div>
-
-      {/* Filter & Sort Dropdowns */}
-      <div className="filter-sort-section">
-        <div className="dropdown-container">
-          <div className="dropdown-group">
-            <label>Filter:</label>
-            <select 
-              className="dropdown"
-              value={activeFilter}
-              onChange={(e) => setActiveFilter(e.target.value)}
-            >
-              <option value="all">All Products</option>
-              <option value="new">New Arrivals</option>
-              <option value="sale">On Sale</option>
-              <option value="men">Men's Wear</option>
-              <option value="women">Women's Wear</option>
-              <option value="kids">Kids & Teens</option>
-            </select>
+      
+      <section className="featured-section">
+        <div className="container">
+          <div className="section-header">
+            <h2>Featured Collections</h2>
+            <p>Discover our premium range of clothing</p>
           </div>
+          
+          <CategoryFilter 
+            activeCategory={filteredCategory} 
+            onCategoryChange={handleCategoryChange}
+            showSaleFilter={true}
+          />
+          
+          <ProductsGrid 
+            category={filteredCategory}
+            isOnSale={isOnSale}
+          />
+        </div>
+      </section>
 
-          <div className="dropdown-group">
-            <label>Sort by:</label>
-            <select 
-              className="dropdown"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="featured">Featured</option>
-              <option value="newest">Newest</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="popular">Most Popular</option>
-            </select>
+      <section className="banner-section">
+        <div className="container">
+          <div className="banner-grid">
+            <div className="banner-card large">
+              <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=800" alt="Luxury Collection" />
+              <div className="banner-content">
+                <h3>Luxury Collection</h3>
+                <p>Exclusive designs for special occasions</p>
+                <button className="banner-btn">Explore</button>
+              </div>
+            </div>
+            <div className="banner-card">
+              <img src="https://images.unsplash.com/photo-1585487000160-6eb9ce6b5aae?w=400" alt="Casual Wear" />
+              <div className="banner-content">
+                <h3>Casual Wear</h3>
+                <p>Comfort meets style</p>
+                <button className="banner-btn">Shop Now</button>
+              </div>
+            </div>
+            <div className="banner-card">
+              <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400" alt="Embroidered" />
+              <div className="banner-content">
+                <h3>Embroidered</h3>
+                <p>Handcrafted elegance</p>
+                <button className="banner-btn">View All</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Products Section */}
-      <div className="products-section">
-        <Product filter={activeFilter} sort={sortBy} />
-      </div>
+      <section className="features-section">
+        <div className="container">
+          <div className="features-grid">
+            <div className="feature-item">
+              <div className="feature-icon">🚚</div>
+              <h4>Free Shipping</h4>
+              <p>On orders over Rs. 5000</p>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">↩️</div>
+              <h4>Easy Returns</h4>
+              <p>14-day return policy</p>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">🔒</div>
+              <h4>Secure Payment</h4>
+              <p>100% secure transactions</p>
+            </div>
+            <div className="feature-item">
+              <div className="feature-icon">☎️</div>
+              <h4>24/7 Support</h4>
+              <p>Dedicated customer service</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
-}
+};
 
 export default Home;
