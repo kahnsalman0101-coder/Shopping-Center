@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext";
+import { useCurrency } from "../context/CurrencyContext"; // Import useCurrency
 import "../style/Cart.css";
 
 function Cart() {
@@ -14,6 +15,8 @@ function Cart() {
     applyCoupon 
   } = useCart();
   
+  const { currencySymbol, getCurrencyInfo } = useCurrency(); // Get currency info
+  
   const [showModal, setShowModal] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [couponApplied, setCouponApplied] = useState(null);
@@ -25,6 +28,16 @@ function Cart() {
     city: "",
     zipCode: ""
   });
+
+  // Get currency information
+  const currencyInfo = getCurrencyInfo();
+  const currentCurrencySymbol = currencySymbol || currencyInfo?.symbol || '₨';
+  const currentCurrency = currencyInfo?.currency || 'PKR';
+
+  // Format price with currency symbol
+  const formatPrice = (price) => {
+    return `${currentCurrencySymbol} ${price?.toLocaleString() || 0}`;
+  };
 
   // Empty cart case
   if (cartItems.length === 0)
@@ -43,6 +56,12 @@ function Cart() {
         <button className="btn btn--secondary load-saved-btn" onClick={saveForLater}>
           📥 Check Saved Cart
         </button>
+
+        {/* Currency info display */}
+        <div className="currency-info-display">
+          <span className="currency-label">Prices displayed in:</span>
+          <span className="currency-value">{currentCurrency} ({currentCurrencySymbol})</span>
+        </div>
       </div>
     );
 
@@ -95,6 +114,8 @@ function Cart() {
       tax: cartStats.tax,
       discount: couponApplied ? couponApplied.amount || couponApplied.value : 0,
       total: calculateFinalTotal(),
+      currency: currentCurrency,
+      currencySymbol: currentCurrencySymbol,
       date: new Date().toISOString()
     };
     
@@ -103,7 +124,7 @@ function Cart() {
     localStorage.setItem("fashionhub_orders", JSON.stringify([orderDetails, ...existingOrders]));
     
     alert(
-      `🎉 Order Confirmed!\n\nOrder ID: ${orderDetails.orderId}\nThank you, ${checkoutData.name}!\nTotal: Rs ${orderDetails.total}\n\nWe've sent order details to ${checkoutData.email}\nOur team will contact you soon for delivery.`
+      `🎉 Order Confirmed!\n\nOrder ID: ${orderDetails.orderId}\nThank you, ${checkoutData.name}!\nTotal: ${currentCurrencySymbol} ${orderDetails.total}\n\nWe've sent order details to ${checkoutData.email}\nOur team will contact you soon for delivery.`
     );
     
     setShowModal(false);
@@ -116,6 +137,16 @@ function Cart() {
   return (
     <div className="container cart-page">
       <h2 className="cart-title">🛍️ Your Shopping Cart ({cartStats.totalItems} items)</h2>
+
+      {/* Currency info banner */}
+      <div className="currency-banner">
+        <span className="currency-banner-text">
+          💱 All prices are in {currentCurrency} ({currentCurrencySymbol})
+        </span>
+        <span className="currency-banner-note">
+          Shipping rates and taxes calculated based on your location
+        </span>
+      </div>
 
       <div className="cart-container">
         {/* Cart items list */}
@@ -134,12 +165,36 @@ function Cart() {
                 <div className="cart-item__content">
                   <div className="cart-item__header">
                     <h3 className="cart-item__name">{item.name}</h3>
-                    <p className="cart-item__price">Rs {itemPrice}</p>
+                    <p className="cart-item__price">{formatPrice(itemPrice)}</p>
                   </div>
                   
-                  <p className="cart-item__meta">
-                    Price: Rs {itemPrice} × {item.quantity}
-                  </p>
+                  <div className="cart-item__meta-row">
+                    <span className="cart-item__meta-item">
+                      <span className="meta-label">Product Code:</span> {item.productCode || "N/A"}
+                    </span>
+                    {item.category && (
+                      <span className="cart-item__meta-item">
+                        <span className="meta-label">Category:</span> {item.category}
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="cart-item__meta-row">
+                    <span className="cart-item__meta-item">
+                      <span className="meta-label">Price:</span> {formatPrice(itemPrice)} × {item.quantity}
+                    </span>
+                  </div>
+                  
+                  {/* Display original price if discounted */}
+                  {item.originalPrice && item.originalPrice > itemPrice && (
+                    <div className="cart-item__original-price">
+                      <span className="original-price-label">Original:</span>
+                      <span className="original-price-value">{formatPrice(item.originalPrice)}</span>
+                      <span className="discount-save">
+                        Save {formatPrice((item.originalPrice - itemPrice) * item.quantity)}
+                      </span>
+                    </div>
+                  )}
                   
                   <div className="quantity-controls">
                     <button 
@@ -155,10 +210,11 @@ function Cart() {
                     >
                       +
                     </button>
+                    <span className="quantity-label">Quantity</span>
                   </div>
                   
                   <p className="cart-item__subtotal">
-                    Subtotal: Rs {(item.quantity * itemPrice).toFixed(0)}
+                    Subtotal: <span className="subtotal-value">{formatPrice(item.quantity * itemPrice)}</span>
                   </p>
                   
                   <div className="cart-item__actions">
@@ -183,24 +239,31 @@ function Cart() {
 
         {/* Cart summary sidebar */}
         <div className="cart-summary">
-          <h3 className="cart-summary__title">Order Summary</h3>
+          <div className="cart-summary__header">
+            <h3 className="cart-summary__title">Order Summary</h3>
+            <div className="cart-currency-info">
+              <span className="cart-currency-label">Currency:</span>
+              <span className="cart-currency-value">{currentCurrency} ({currentCurrencySymbol})</span>
+            </div>
+          </div>
           
           <div className="cart-summary__details">
             <div className="cart-summary__row">
-              <span>Subtotal ({cartStats.totalItems} items)</span>
-              <span>Rs {(cartStats.totalPrice || 0).toFixed(0)}</span>
+              <span className="cart-summary__label">Subtotal ({cartStats.totalItems} items)</span>
+              <span className="cart-summary__value">{formatPrice(cartStats.totalPrice || 0)}</span>
             </div>
             <div className="cart-summary__row">
-              <span>Shipping</span>
-              <span className={cartStats.isFreeShipping ? "cart-summary__value--free" : ""}>
-                {cartStats.isFreeShipping ? 'FREE' : `Rs ${cartStats.shippingCost || 0}`}
+              <span className="cart-summary__label">Shipping</span>
+              <span className={`cart-summary__value ${cartStats.isFreeShipping ? "cart-summary__value--free" : ""}`}>
+                {cartStats.isFreeShipping ? 'FREE' : formatPrice(cartStats.shippingCost || 0)}
               </span>
             </div>
             <div className="cart-summary__row">
-              <span>Tax (16%)</span>
-              <span>Rs {(cartStats.tax || 0).toFixed(0)}</span>
+              <span className="cart-summary__label">Tax (16%)</span>
+              <span className="cart-summary__value">{formatPrice(cartStats.tax || 0)}</span>
             </div>
             
+            {/* Coupon Section */}
             <div className="coupon-section">
               <h4 className="coupon-section__title">Apply Coupon</h4>
               <div className="coupon-input-group">
@@ -224,18 +287,45 @@ function Cart() {
                     <span>✅</span> Coupon Applied
                   </span>
                   <span className="discount-amount">
-                    -Rs {couponApplied.type === "percentage" 
+                    -{currentCurrencySymbol} {couponApplied.type === "percentage" 
                       ? (couponApplied.amount || 0).toFixed(0)
                       : (couponApplied.value || 0)}
                   </span>
                 </div>
               )}
+              <div className="coupon-suggestions">
+                <span className="coupon-suggestions__label">Try:</span>
+                <button className="coupon-suggestion" onClick={() => setCouponCode("WELCOME10")}>WELCOME10</button>
+                <button className="coupon-suggestion" onClick={() => setCouponCode("FASHION20")}>FASHION20</button>
+                <button className="coupon-suggestion" onClick={() => setCouponCode("SUMMER25")}>SUMMER25</button>
+              </div>
             </div>
             
+            <div className="cart-summary__divider"></div>
+            
             <div className="cart-summary__row cart-summary__row--total">
-              <span>Total Amount</span>
-              <span className="cart-total">Rs {calculateFinalTotal()}</span>
+              <span className="cart-summary__label">Total Amount</span>
+              <span className="cart-total">{formatPrice(calculateFinalTotal())}</span>
             </div>
+
+            {/* Shipping info */}
+            {cartStats.isFreeShipping ? (
+              <div className="free-shipping-message">
+                <span>🚚</span> You've qualified for free shipping!
+              </div>
+            ) : (
+              <div className="shipping-progress">
+                <span className="shipping-progress__text">
+                  Add {formatPrice(5000 - (cartStats.totalPrice || 0))} more for free shipping
+                </span>
+                <div className="shipping-progress__bar">
+                  <div 
+                    className="shipping-progress__fill"
+                    style={{ width: `${Math.min(100, ((cartStats.totalPrice || 0) / 5000) * 100)}%` }}
+                  ></div>
+                </div>
+              </div>
+            )}
           </div>
           
           <div className="cart-summary__actions">
@@ -267,10 +357,10 @@ function Cart() {
               <span>💳</span> Multiple Payments
             </div>
             <div className="badge">
-              <span>📦</span> Free Shipping
+              <span>📦</span> Free Shipping over {formatPrice(5000)}
             </div>
             <div className="badge">
-              <span>↩️</span> Easy Returns
+              <span>↩️</span> 30-Day Returns
             </div>
           </div>
         </div>
@@ -283,6 +373,9 @@ function Cart() {
             <div className="checkout-modal__header">
               <h3 className="checkout-modal__title">Complete Your Order</h3>
               <p className="checkout-modal__subtitle">Review your items and enter your details</p>
+              <div className="checkout-currency-info">
+                <span>All amounts in {currentCurrency} ({currentCurrencySymbol})</span>
+              </div>
             </div>
             
             <div className="checkout-modal__content">
@@ -293,15 +386,42 @@ function Cart() {
                     const itemPrice = getItemPrice(item);
                     return (
                       <div key={item.id} className="order-item">
-                        <span>{item.name} <span className="order-item__quantity">× {item.quantity}</span></span>
-                        <span>Rs {(item.quantity * itemPrice).toFixed(0)}</span>
+                        <span className="order-item__name">
+                          {item.name} 
+                          <span className="order-item__quantity">× {item.quantity}</span>
+                        </span>
+                        <span className="order-item__price">{formatPrice(item.quantity * itemPrice)}</span>
                       </div>
                     );
                   })}
                 </div>
-                <div className="cart-summary__row cart-summary__row--total">
-                  <span>Total Amount</span>
-                  <span className="cart-total">Rs {calculateFinalTotal()}</span>
+                <div className="order-summary-totals">
+                  <div className="order-summary-row">
+                    <span>Subtotal</span>
+                    <span>{formatPrice(cartStats.totalPrice || 0)}</span>
+                  </div>
+                  <div className="order-summary-row">
+                    <span>Shipping</span>
+                    <span>{cartStats.isFreeShipping ? 'FREE' : formatPrice(cartStats.shippingCost || 0)}</span>
+                  </div>
+                  <div className="order-summary-row">
+                    <span>Tax</span>
+                    <span>{formatPrice(cartStats.tax || 0)}</span>
+                  </div>
+                  {couponApplied && (
+                    <div className="order-summary-row order-summary-row--discount">
+                      <span>Discount</span>
+                      <span className="discount-value">
+                        -{currentCurrencySymbol} {couponApplied.type === "percentage" 
+                          ? (couponApplied.amount || 0).toFixed(0)
+                          : (couponApplied.value || 0)}
+                      </span>
+                    </div>
+                  )}
+                  <div className="order-summary-row order-summary-row--total">
+                    <span>Total Amount</span>
+                    <span className="order-total">{formatPrice(calculateFinalTotal())}</span>
+                  </div>
                 </div>
               </div>
               
@@ -404,6 +524,10 @@ function Cart() {
                     <option value="jazzcash">JazzCash</option>
                     <option value="easypaisa">EasyPaisa</option>
                   </select>
+                </div>
+
+                <div className="payment-note">
+                  <span>💡 Note:</span> All transactions are secure and encrypted. Your payment information is never stored on our servers.
                 </div>
                 
                 <div className="checkout-modal__footer">

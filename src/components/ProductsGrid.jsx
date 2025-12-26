@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { useCurrency } from '../context/CurrencyContext'; // Import useCurrency
 import ProductCard from './ProductCard';
 import '../style/ProductGrid.css';
 
@@ -7,18 +8,20 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
+  const { selectedCountry, convertPrice, getCurrencyInfo } = useCurrency(); // Get currency functions
 
   useEffect(() => {
     const fetchProducts = () => {
       setLoading(true);
       setTimeout(() => {
+        // Store base prices in PKR
         const allProducts = [
           {
             id: 1,
             productCode: "AJLFC-08",
             productName: "EMBROIDERED JAVERIA NET UNSTITCHED",
-            originalPrice: 8850,
-            discountedPrice: 6195,
+            basePricePKR: 8850, // Store base price in PKR
+            baseDiscountedPricePKR: 6195, // Store base discounted price in PKR
             fabricType: "NET",
             pieces: 3,
             imageUrl: "/dress/download (1).jpeg",
@@ -26,55 +29,54 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
           },
           {
             id: 2,
-            productCode: "AJLFC-10",
-            productName: "EMBROIDERED NET UNSTITCHED",
-            originalPrice: 8350,
-            discountedPrice: 5845,
-            fabricType: "NET",
-            pieces: 3,
-            imageUrl: "/dress/download (3).jpeg",
-            category: "net"
+            productCode: "AJLFC-09",
+            productName: "SILK EMBROIDERED DRESS",
+            basePricePKR: 7500,
+            baseDiscountedPricePKR: 5250,
+            fabricType: "SILK",
+            pieces: 2,
+            imageUrl: "/dress/download (1).jpeg",
+            category: "silk"
           },
           {
             id: 3,
-            productCode: "AJLFC-04",
-            productName: "EMBROIDERED RAW SILK UNSTITCHED",
-            originalPrice: 7950,
-            discountedPrice: 5565,
-            fabricType: "RAW SILK",
+            productCode: "AJLFC-10",
+            productName: "COTTON PRINT UNSTITCHED",
+            basePricePKR: 3500,
+            baseDiscountedPricePKR: 2450,
+            fabricType: "COTTON",
             pieces: 3,
-            imageUrl: "/dress/download (4).jpeg",
-            category: "silk",
-            isNew: true
+            imageUrl: "/dress/download (1).jpeg",
+            category: "cotton"
           },
           {
             id: 4,
-            productCode: "AJMCH-15",
-            productName: "DIGITAL PRINTED LAWN UNSTITCHED",
-            originalPrice: 2850,
-            discountedPrice: 1995,
-            fabricType: "LAWN",
-            pieces: 2,
-            imageUrl: "/dress/download.jpeg",
-            category: "lawn"
-          },
-          {
-            id: 5,
-            productCode: "AJFO-09",
-            productName: "EMBROIDERED CHIFFON UNSTITCHED",
-            originalPrice: 7650,
-            discountedPrice: 4590,
+            productCode: "AJLFC-11",
+            productName: "CHIFFON PARTY WEAR",
+            basePricePKR: 6500,
+            baseDiscountedPricePKR: 4550,
             fabricType: "CHIFFON",
-            pieces: 3,
-            imageUrl: "/dress/downloada.jpeg",
+            pieces: 2,
+            imageUrl: "/dress/download (1).jpeg",
             category: "chiffon"
           },
           {
+            id: 5,
+            productCode: "AJLFC-12",
+            productName: "VELVET WINTER COLLECTION",
+            basePricePKR: 9500,
+            baseDiscountedPricePKR: 6650,
+            fabricType: "VELVET",
+            pieces: 3,
+            imageUrl: "/dress/download (1).jpeg",
+            category: "velvet"
+          },
+          {
             id: 6,
-            productCode: "AJLFC-02",
-            productName: "EMBROIDERED ORGANZA UNSTITCHED",
-            originalPrice: 8350,
-            discountedPrice: 5845,
+            productCode: "AJLFC-13",
+            productName: "ORGANZA BRIDAL WEAR",
+            basePricePKR: 12000,
+            baseDiscountedPricePKR: 8400,
             fabricType: "ORGANZA",
             pieces: 2,
             imageUrl: "/dress/download (1).jpeg",
@@ -82,75 +84,36 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
           },
           {
             id: 7,
-            productCode: "AJIZL-16",
-            productName: "EMBROIDERED CHIFFON UNSTITCHED",
-            originalPrice: 8950,
-            discountedPrice: 5370,
-            fabricType: "CHIFFON",
-            pieces: 3,
-            imageUrl: "/dress/download (3).jpeg",
-            category: "chiffon"
-          },
-          {
-            id: 8,
-            productCode: "AJMCH-14",
-            productName: "PRINTED LAWN UNSTITCHED",
-            originalPrice: 2750,
-            discountedPrice: 1925,
+            productCode: "AJLFC-14",
+            productName: "LAWN SUMMER COLLECTION",
+            basePricePKR: 2800,
+            baseDiscountedPricePKR: 1960,
             fabricType: "LAWN",
-            pieces: 2,
-            imageUrl: "/dress/download (4).jpeg",
-            category: "lawn",
-            isNew: true
-          },
-          {
-            id: 9,
-            productCode: "AJLFC-12",
-            productName: "EMBROIDERED VELVET UNSTITCHED",
-            originalPrice: 9250,
-            discountedPrice: 7400,
-            fabricType: "VELVET",
-            pieces: 3,
-            imageUrl: "/dress/downloada.jpeg",
-            category: "velvet"
-          },
-          {
-            id: 10,
-            productCode: "AJMCH-16",
-            productName: "DIGITAL PRINTED VOILE UNSTITCHED",
-            originalPrice: 3250,
-            discountedPrice: 2275,
-            fabricType: "VOILE",
-            pieces: 2,
-            imageUrl: "/dress/download.jpeg",
-            category: "voile",
-            isNew: true
-          },
-          {
-            id: 11,
-            productCode: "AJFO-11",
-            productName: "EMBROIDERED GEORGETTE UNSTITCHED",
-            originalPrice: 8150,
-            discountedPrice: 5705,
-            fabricType: "GEORGETTE",
             pieces: 3,
             imageUrl: "/dress/download (1).jpeg",
-            category: "georgette"
-          },
-          {
-            id: 12,
-            productCode: "AJLFC-15",
-            productName: "EMBROIDERED SATIN UNSTITCHED",
-            originalPrice: 7450,
-            discountedPrice: 5215,
-            fabricType: "SATIN",
-            pieces: 3,
-            imageUrl: "/dress/download (3).jpeg",
-            category: "satin"
+            category: "lawn"
           }
         ];
 
-        let filteredProducts = allProducts;
+        // Get current currency info
+        const currencyInfo = getCurrencyInfo();
+        
+        // Convert prices based on selected country
+        const productsWithConvertedPrices = allProducts.map(product => {
+          const convertedOriginal = convertPrice(product.basePricePKR);
+          const convertedDiscounted = convertPrice(product.baseDiscountedPricePKR);
+          
+          return {
+            ...product,
+            originalPrice: convertedOriginal,
+            discountedPrice: convertedDiscounted,
+            currencySymbol: currencyInfo.symbol,
+            currency: currencyInfo.currency,
+            discountPercentage: Math.round(((product.basePricePKR - product.baseDiscountedPricePKR) / product.basePricePKR) * 100)
+          };
+        });
+
+        let filteredProducts = productsWithConvertedPrices;
         
         if (category !== 'all') {
           filteredProducts = filteredProducts.filter(product => 
@@ -160,7 +123,7 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
         
         if (isOnSale) {
           filteredProducts = filteredProducts.filter(product => 
-            product.discountedPrice < product.originalPrice
+            product.baseDiscountedPricePKR < product.basePricePKR
           );
         }
         
@@ -170,7 +133,7 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
     };
 
     fetchProducts();
-  }, [category, isOnSale]);
+  }, [category, isOnSale, selectedCountry, convertPrice, getCurrencyInfo]); // Add currency dependencies
 
   const handleAddToCart = (product) => {
     const cartItem = {
@@ -178,11 +141,15 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
       name: product.productName,
       price: product.discountedPrice,
       originalPrice: product.originalPrice,
+      basePricePKR: product.basePricePKR,
+      baseDiscountedPricePKR: product.baseDiscountedPricePKR,
       img: product.imageUrl,
       category: product.fabricType,
       quantity: 1,
       productCode: product.productCode,
-      pieces: product.pieces
+      pieces: product.pieces,
+      currencySymbol: product.currencySymbol,
+      currency: product.currency
     };
     
     addToCart(cartItem);
@@ -208,7 +175,7 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
         {products.map((product) => (
           <ProductCard 
             key={product.id} 
-            {...product} 
+            product={product}
             onAddToCart={() => handleAddToCart(product)}
           />
         ))}

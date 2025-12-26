@@ -26,7 +26,7 @@ const Home = ({ sale = false }) => {
         <div className="container">
           <div className="section-header">
             <h2>Featured Collections</h2>
-            <p>Discover our premium range of clothing</p>
+            <p >Discover our premium range of clothing</p>
           </div>
           
           <CategoryFilter 

@@ -1,0 +1,226 @@
+/* Mobile Shipping Component Styles */
+.mobile-shipping-main {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.mobile-shipping-main-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.mobile-shipping-main-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.mobile-shipping-main-btn:active {
+  transform: translateY(0);
+}
+
+.shipping-main-flag {
+  font-size: 18px;
+}
+
+.shipping-main-label {
+  margin-right: 5px;
+}
+
+.shipping-main-currency {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Country Dropdown */
+.mobile-country-main-dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 10px;
+  width: 280px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.mobile-country-main-dropdown.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.country-main-dropdown-header {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.country-main-dropdown-header span {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.country-main-dropdown-subtitle {
+  margin-top: 5px;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+.country-main-dropdown-list {
+  padding: 8px;
+}
+
+.country-main-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.country-main-dropdown-item:hover {
+  background: #f8f9fa;
+}
+
+.country-main-dropdown-item.selected {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-left: 3px solid #667eea;
+}
+
+.country-main-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.country-main-flag {
+  font-size: 20px;
+  width: 30px;
+}
+
+.country-main-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.country-main-name {
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.country-main-currency-small {
+  font-size: 12px;
+  color: #666;
+}
+
+.country-main-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.country-main-code {
+  font-size: 12px;
+  color: #999;
+  background: #f1f1f1;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.country-main-selected-indicator {
+  color: #667eea;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.country-main-dropdown-footer {
+  padding: 12px 15px;
+  border-top: 1px solid #eee;
+  background: #fafafa;
+  border-radius: 0 0 12px 12px;
+}
+
+.country-main-note {
+  font-size: 11px;
+  color: #777;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Scrollbar styling for dropdown */
+.mobile-country-main-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mobile-country-main-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 0 0 12px 0;
+}
+
+.mobile-country-main-dropdown::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.mobile-country-main-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mobile-shipping-main {
+    bottom: 15px;
+    left: 15px;
+  }
+  
+  .mobile-country-main-dropdown {
+    width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-shipping-main-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  .shipping-main-currency {
+    display: none; /* Hide currency on very small screens */
+  }
+  
+  .mobile-country-main-dropdown {
+    width: 220px;
+  }
+}

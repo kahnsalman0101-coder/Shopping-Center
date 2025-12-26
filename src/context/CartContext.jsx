@@ -6,13 +6,19 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(() => {
-    // Load cart from localStorage on initial render
     const savedCart = localStorage.getItem("fashionhub_cart");
-    return savedCart ? JSON.parse(savedCart) : [];
+    if (savedCart) {
+      const parsed = JSON.parse(savedCart);
+      return parsed.map(item => ({
+        ...item,
+        basePricePKR: item.basePricePKR || item.originalPrice,
+        baseDiscountedPricePKR: item.baseDiscountedPricePKR || item.price
+      }));
+    }
+    return [];
   });
 
   const [wishlistItems, setWishlistItems] = useState(() => {
-    // Load wishlist from localStorage
     const savedWishlist = localStorage.getItem("fashionhub_wishlist");
     return savedWishlist ? JSON.parse(savedWishlist) : [];
   });
@@ -27,7 +33,6 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("fashionhub_wishlist", JSON.stringify(wishlistItems));
   }, [wishlistItems]);
 
-  // ✅ Toast notification helper
   const showToast = useCallback((message, type = "success") => {
     const config = {
       position: "top-right",
@@ -58,7 +63,6 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  // ✅ Add to cart with quantity option
   const addToCart = useCallback((product, quantity = 1) => {
     setCartItems((prev) => {
       const exists = prev.find((p) => p.id === product.id);
@@ -87,7 +91,10 @@ export const CartProvider = ({ children }) => {
         const newItem = { 
           ...product, 
           quantity,
-          addedAt: new Date().toISOString()
+          addedAt: new Date().toISOString(),
+          // Ensure base prices are stored
+          basePricePKR: product.basePricePKR || product.originalPrice,
+          baseDiscountedPricePKR: product.baseDiscountedPricePKR || product.price
         };
         
         showToast(
@@ -100,7 +107,6 @@ export const CartProvider = ({ children }) => {
     });
   }, [showToast]);
 
-  // ✅ Remove from cart
   const removeFromCart = useCallback((id) => {
     setCartItems((prev) => {
       const removedItem = prev.find((p) => p.id === id);
@@ -114,7 +120,6 @@ export const CartProvider = ({ children }) => {
     });
   }, [showToast]);
 
-  // ✅ Update quantity
   const updateQuantity = useCallback((id, quantity) => {
     setCartItems((prev) => {
       const item = prev.find((p) => p.id === id);
@@ -156,7 +161,6 @@ export const CartProvider = ({ children }) => {
     });
   }, [showToast]);
 
-  // ✅ Clear cart
   const clearCart = useCallback(() => {
     setCartItems((prev) => {
       if (prev.length > 0) {
@@ -166,16 +170,13 @@ export const CartProvider = ({ children }) => {
     });
   }, [showToast]);
 
-  // ✅ Move item from cart to wishlist
   const moveToWishlist = useCallback((id) => {
     setCartItems((prev) => {
       const itemToMove = prev.find((p) => p.id === id);
       if (!itemToMove) return prev;
 
-      // Remove from cart
       const updatedCart = prev.filter((p) => p.id !== id);
       
-      // Add to wishlist
       setWishlistItems((wishlist) => {
         const existsInWishlist = wishlist.find((w) => w.id === id);
         if (existsInWishlist) {
@@ -199,7 +200,6 @@ export const CartProvider = ({ children }) => {
     });
   }, [showToast]);
 
-  // ✅ Add to wishlist
   const addToWishlist = useCallback((product) => {
     setWishlistItems((prev) => {
       const exists = prev.find((p) => p.id === product.id);
@@ -220,7 +220,6 @@ export const CartProvider = ({ children }) => {
     });
   }, [showToast]);
 
-  // ✅ Remove from wishlist
   const removeFromWishlist = useCallback((id) => {
     setWishlistItems((prev) => {
       const removedItem = prev.find((p) => p.id === id);
@@ -234,16 +233,13 @@ export const CartProvider = ({ children }) => {
     });
   }, [showToast]);
 
-  // ✅ Move item from wishlist to cart
   const moveToCart = useCallback((id) => {
     setWishlistItems((prev) => {
       const itemToMove = prev.find((p) => p.id === id);
       if (!itemToMove) return prev;
 
-      // Remove from wishlist
       const updatedWishlist = prev.filter((p) => p.id !== id);
       
-      // Add to cart
       addToCart(itemToMove);
       
       showToast(
@@ -255,7 +251,6 @@ export const CartProvider = ({ children }) => {
     });
   }, [addToCart, showToast]);
 
-  // ✅ Calculate cart statistics - USE useMemo TO PREVENT RECALCULATION
   const cartStats = useMemo(() => {
     const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
     const totalPrice = cartItems.reduce((total, item) => {
@@ -279,22 +274,18 @@ export const CartProvider = ({ children }) => {
     };
   }, [cartItems, wishlistItems]);
 
-  // ✅ Check if item is in wishlist
   const isInWishlist = useCallback((id) => {
     return wishlistItems.some(item => item.id === id);
   }, [wishlistItems]);
 
-  // ✅ Check if item is in cart
   const isInCart = useCallback((id) => {
     return cartItems.some(item => item.id === id);
   }, [cartItems]);
 
-  // ✅ Get cart item by ID
   const getCartItem = useCallback((id) => {
     return cartItems.find(item => item.id === id);
   }, [cartItems]);
 
-  // ✅ Save cart for later (temporary storage)
   const saveForLater = useCallback(() => {
     const cartData = {
       items: cartItems,
@@ -309,7 +300,6 @@ export const CartProvider = ({ children }) => {
     return cartData;
   }, [cartItems, cartStats, showToast]);
 
-  // ✅ Load saved cart
   const loadSavedCart = useCallback(() => {
     const savedData = localStorage.getItem("fashionhub_saved_cart");
     if (savedData) {
@@ -322,13 +312,12 @@ export const CartProvider = ({ children }) => {
     return false;
   }, [showToast]);
 
-  // ✅ Apply coupon/discount
   const applyCoupon = useCallback((couponCode) => {
     const coupons = {
-      "WELCOME10": 0.10, // 10% off
-      "FASHION20": 0.20, // 20% off
-      "SUMMER25": 0.25,  // 25% off
-      "FREESHIP": "freeshipping" // Free shipping
+      "WELCOME10": 0.10,
+      "FASHION20": 0.20,
+      "SUMMER25": 0.25,
+      "FREESHIP": "freeshipping"
     };
 
     const discount = coupons[couponCode.toUpperCase()];
@@ -351,29 +340,24 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider value={{
-      // Cart items and operations
       cartItems,
       wishlistItems,
       cartStats,
       
-      // Cart operations
       addToCart,
       removeFromCart,
       updateQuantity,
       clearCart,
       moveToWishlist,
       
-      // Wishlist operations
       addToWishlist,
       removeFromWishlist,
       moveToCart,
       
-      // Utility functions
       isInWishlist,
       isInCart,
       getCartItem,
       
-      // Advanced features
       saveForLater,
       loadSavedCart,
       applyCoupon

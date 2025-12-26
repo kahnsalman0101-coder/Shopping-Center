@@ -1083,4 +1083,319 @@ body {
 
 .gradient-border-dark {
   background-image: linear-gradient(var(--neutral-100), var(--neutral-100)), linear-gradient(135deg, var(--primary), var(--accent));
+}/* Add these styles to your existing Cart.css file */
+
+/* Currency Info Display */
+.currency-info-display {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #e9ecef;
+}
+
+.currency-label {
+  font-weight: 600;
+  color: #495057;
+  margin-right: 8px;
+}
+
+.currency-value {
+  font-weight: 700;
+  color: #667eea;
+  background-color: #e9ecef;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Currency Banner */
+.currency-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.currency-banner-text {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.currency-banner-note {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Cart Summary Header */
+.cart-summary__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.cart-currency-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-currency-label {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.cart-currency-value {
+  font-weight: 600;
+  color: #667eea;
+  background-color: #f8f9fa;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Cart Item Meta */
+.cart-item__meta-row {
+  display: flex;
+  gap: 15px;
+  margin: 8px 0;
+}
+
+.cart-item__meta-item {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.meta-label {
+  font-weight: 600;
+  color: #495057;
+  margin-right: 4px;
+}
+
+/* Original Price Display */
+.cart-item__original-price {
+  background-color: #fff3cd;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.original-price-label {
+  font-weight: 600;
+  color: #856404;
+}
+
+.original-price-value {
+  text-decoration: line-through;
+  color: #856404;
+}
+
+.discount-save {
+  margin-left: auto;
+  font-weight: 700;
+  color: #28a745;
+  background-color: #d4edda;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+/* Quantity Controls Update */
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.quantity-label {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+/* Cart Summary Row Updates */
+.cart-summary__label {
+  font-weight: 500;
+  color: #495057;
+}
+
+.cart-summary__value {
+  font-weight: 600;
+  color: #212529;
+}
+
+.cart-summary__value--free {
+  color: #28a745;
+  font-weight: 700;
+}
+
+/* Free Shipping Message */
+.free-shipping-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+/* Shipping Progress */
+.shipping-progress {
+  margin-top: 15px;
+}
+
+.shipping-progress__text {
+  display: block;
+  font-size: 14px;
+  color: #6c757d;
+  margin-bottom: 8px;
+}
+
+.shipping-progress__bar {
+  height: 6px;
+  background-color: #e9ecef;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.shipping-progress__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Coupon Suggestions */
+.coupon-suggestions {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.coupon-suggestions__label {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.coupon-suggestion {
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  color: #495057;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.coupon-suggestion:hover {
+  background-color: #dee2e6;
+  transform: translateY(-1px);
+}
+
+/* Checkout Modal Currency Info */
+.checkout-currency-info {
+  margin-top: 5px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Order Summary in Modal */
+.order-summary-totals {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e9ecef;
+}
+
+.order-summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.order-summary-row--discount {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.discount-value {
+  color: #28a745;
+}
+
+.order-summary-row--total {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 2px solid #e9ecef;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.order-total {
+  color: #667eea;
+  font-size: 20px;
+}
+
+/* Payment Note */
+.payment-note {
+  background-color: #f8f9fa;
+  border-left: 4px solid #667eea;
+  padding: 12px 15px;
+  margin: 15px 0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #495057;
+}
+
+.payment-note span {
+  font-weight: 600;
+  color: #667eea;
+  margin-right: 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .currency-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .cart-item__meta-row {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .cart-summary__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .coupon-suggestions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
