@@ -141,11 +141,14 @@ const QuickViewModal = ({ product, onClose, onAddToCart }) => {
               <button className="add-to-cart-main" onClick={handleAddToCart}>
                 <i className="fas fa-shopping-cart"></i>
                 <span>Add to Cart - Rs. {(product.discountedPrice * quantity).toLocaleString()}</span>
+
               </button>
-              <button className="buy-now-main">
-                <i className="fas fa-bolt"></i>
-                <span>Buy Now</span>
+                <button className="aa" onClick={handleAddToCart}>
+                <i className="aa"></i>
+                <span>Buy Now  </span>
               </button>
+             
+
             </div>
 
             {/* Additional Info */}

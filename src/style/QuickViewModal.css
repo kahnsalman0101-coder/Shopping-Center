@@ -654,6 +654,48 @@
 .quickview-modal-content::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+/* Button styling */
+button.aa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Icon inside button */
+button.aa i.aa {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+/* Hover effect */
+button.aa:hover {
+  background-color: #e60000;
+  transform: translateY(-2px);
+}
+
+/* Active (click) effect */
+button.aa:active {
+  transform: translateY(0);
+}
+
+/* Optional: disable state */
+button.aa:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
 
 /* Font Awesome Icons fallback */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');

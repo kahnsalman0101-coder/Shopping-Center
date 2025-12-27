@@ -54,7 +54,7 @@ const Home = ({ sale = false }) => {
               </div>
             </div>
             <div className="banner-card">
-              <img src="https://images.unsplash.com/photo-1585487000160-6eb9ce6b5aae?w=400" alt="Casual Wear" />
+              <img src="/WinterSlider/500x500-lux-pret_ad15a7e6-261c-4a2f-b225-7bbe71205ea7_600x600.webp" alt="Casual Wear" />
               <div className="banner-content">
                 <h3>Casual Wear</h3>
                 <p>Comfort meets style</p>
@@ -62,7 +62,7 @@ const Home = ({ sale = false }) => {
               </div>
             </div>
             <div className="banner-card">
-              <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400" alt="Embroidered" />
+              <img src="/WinterSlider/500x500-unstitched_c623f23d-1579-4887-a76f-5987d86719dc_600x600.webp" alt="Embroidered" />
               <div className="banner-content">
                 <h3>Embroidered</h3>
                 <p>Handcrafted elegance</p>
@@ -73,32 +73,8 @@ const Home = ({ sale = false }) => {
         </div>
       </section>
 
-      <section className="features-section">
-        <div className="container">
-          <div className="features-grid">
-            <div className="feature-item">
-              <div className="feature-icon">🚚</div>
-              <h4>Free Shipping</h4>
-              <p>On orders over Rs. 5000</p>
-            </div>
-            <div className="feature-item">
-              <div className="feature-icon">↩️</div>
-              <h4>Easy Returns</h4>
-              <p>14-day return policy</p>
-            </div>
-            <div className="feature-item">
-              <div className="feature-icon">🔒</div>
-              <h4>Secure Payment</h4>
-              <p>100% secure transactions</p>
-            </div>
-            <div className="feature-item">
-              <div className="feature-icon">☎️</div>
-              <h4>24/7 Support</h4>
-              <p>Dedicated customer service</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      
+
     </div>
   );
 };

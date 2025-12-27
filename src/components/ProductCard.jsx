@@ -52,7 +52,7 @@ const ProductCard = ({
     discountPercentage: discount,
     currencySymbol: currencySymbol,
     description: `Premium ${fabricType} fabric with intricate embroidery. Perfect for special occasions. Made with high-quality materials and attention to detail.`,
-    colors: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'],
+    colors: [],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
     stock: 15,
     img: imageUrl,

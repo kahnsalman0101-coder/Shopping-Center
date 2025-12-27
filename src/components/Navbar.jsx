@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { useCart } from '../context/CartContext';
-import { useCurrency } from '../context/CurrencyContext'; // Change to useCurrency
-import SignUpModal from './SignUpModal';
+import { useCurrency } from '../context/CurrencyContext';
+import { useAuth } from '../context/AuthContext'; // Import useAuth
+import LoginModal from './LoginModal'; // We'll create this
 import CartModal from './CartModal';
 import '../style/Navbar.css';
 
@@ -10,8 +12,7 @@ const Navbar = () => {
   const [showCartModal, setShowCartModal] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false); // Changed from showSignUpModal
   const [searchExpanded, setSearchExpanded] = useState(false);
   const [isCountryOpen, setIsCountryOpen] = useState(false);
   const [activeBottomMenu, setActiveBottomMenu] = useState(null);
@@ -20,13 +21,16 @@ const Navbar = () => {
   const searchRef = useRef(null);
   const countryRef = useRef(null);
 
-  // Use Currency Context (not Country Context)
+  // Use Auth Context to get user info
+  const { user, isAdmin, logout, isLoading: authLoading } = useAuth();
+  
+  // Use Currency Context
   const { 
     selectedCountry, 
     setSelectedCountry, 
     exchangeRates,
     countries: currencyCountries 
-  } = useCurrency(); // Change to useCurrency
+  } = useCurrency();
 
   const { cartItems, cartStats, updateQuantity, removeFromCart, clearCart } = useCart();
 
@@ -147,13 +151,8 @@ const Navbar = () => {
   };
 
   // Login functionality
-  const handleLogin = () => {
-    if (isLoggedIn) {
-      setIsLoggedIn(false);
-      alert('Logged out successfully');
-    } else {
-      setShowSignUpModal(true);
-    }
+  const handleLoginClick = () => {
+    setShowLoginModal(true);
   };
 
   // Cart functionality
@@ -176,15 +175,20 @@ const Navbar = () => {
     setShowCartModal(false);
   };
 
-  // Sign Up success callback
-  const handleSignUpSuccess = (userData) => {
-    setIsLoggedIn(true);
-    alert(`Welcome ${userData.name}! Your account has been created.`);
+  // Login success callback
+  const handleLoginSuccess = (userData) => {
+    if (window.toast) {
+      if (userData.role === 'admin') {
+        window.toast.success(`Welcome back Admin ${userData.name}!`);
+      } else {
+        window.toast.success(`Welcome ${userData.name}!`);
+      }
+    }
   };
 
-  // Close sign up modal
-  const closeSignUpModal = () => {
-    setShowSignUpModal(false);
+  // Close login modal
+  const closeLoginModal = () => {
+    setShowLoginModal(false);
   };
 
   // Get current country name with flag
@@ -213,11 +217,11 @@ const Navbar = () => {
 
   // User dropdown functionality
   const handleUserAction = () => {
-    if (isLoggedIn) {
-      alert('Going to your profile...');
+    if (user) {
+      // Show user dropdown or go to profile
       window.location.href = '/profile';
     } else {
-      handleLogin();
+      handleLoginClick();
     }
   };
 
@@ -231,7 +235,11 @@ const Navbar = () => {
     }
     
     if (item.text === 'ACCOUNT') {
-      handleUserAction();
+      if (user) {
+        window.location.href = '/profile';
+      } else {
+        handleLoginClick();
+      }
       return;
     }
     
@@ -260,6 +268,14 @@ const Navbar = () => {
     }
   };
 
+  // User dropdown items
+  const userDropdownItems = user ? [
+    { text: 'My Profile', icon: '👤', link: '/profile' },
+    { text: 'My Orders', icon: '📦', link: '/orders' },
+    ...(isAdmin ? [{ text: 'Admin Panel', icon: '⚙️', link: '/admin' }] : []),
+    { text: 'Logout', icon: '🚪', action: logout }
+  ] : [];
+
   return (
     <>
       {/* Main Navbar - Hidden when mobile menu is open */}
@@ -277,18 +293,21 @@ const Navbar = () => {
           <div className="navbar-center">
             <div className="nav-links-container">
               {navItems.map((item, index) => (
-                <a
+                <Link
                   key={index}
-                  href={item.link}
+                  to={item.link}
                   className="nav-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.location.href = item.link;
-                  }}
                 >
                   {item.text}
-                </a>
+                </Link>
               ))}
+              
+              {/* Admin Link - Only show for admins */}
+              {isAdmin && (
+                <Link to="/admin" className="nav-link admin-link">
+                  ADMIN
+                </Link>
+              )}
             </div>
           </div>
 
@@ -335,14 +354,70 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* User/Login Icon */}
-            <button 
-              className={`icon-btn user-btn ${isLoggedIn ? 'logged-in' : ''}`} 
-              onClick={handleUserAction}
-              title={isLoggedIn ? "My Account" : "Login"}
-            >
-              <i className="bi bi-person-fill"></i>
-            </button>
+            {/* User Dropdown */}
+            <div className="user-dropdown">
+              {user ? (
+                <>
+                  <button 
+                    className={`icon-btn user-btn ${user ? 'logged-in' : ''}`} 
+                    onClick={handleUserAction}
+                    title={`Welcome, ${user.name}`}
+                  >
+                    <i className="bi bi-person-fill"></i>
+                    <span className="user-name-badge">{user.name.charAt(0)}</span>
+                  </button>
+                  
+                  {/* User Dropdown Menu */}
+                  <div className="user-dropdown-menu">
+                    <div className="user-dropdown-header">
+                      <div className="user-info">
+                        <i className="bi bi-person-circle"></i>
+                        <div>
+                          <strong>{user.name}</strong>
+                          <small>{user.email}</small>
+                          {isAdmin && <span className="admin-badge">Admin</span>}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="user-dropdown-items">
+                      {userDropdownItems.map((item, index) => (
+                        item.action ? (
+                          <button
+                            key={index}
+                            className="user-dropdown-item"
+                            onClick={item.action}
+                          >
+                            <span className="dropdown-icon">{item.icon}</span>
+                            {item.text}
+                          </button>
+                        ) : (
+                          <Link
+                            key={index}
+                            to={item.link}
+                            className="user-dropdown-item"
+                          >
+                            <span className="dropdown-icon">{item.icon}</span>
+                            {item.text}
+                          </Link>
+                        )
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <button 
+                  className="icon-btn user-btn logi"
+                  onClick={handleLoginClick}
+                  title="Login"
+                >
+                  <i className="bi bi-box-arrow-in-right"></i>
+                  <span className="login-text">
+                    <i className="fa fa-user"></i>
+                        </span>
+
+                </button>
+              )}
+            </div>
 
             {/* Cart Icon */}
             <button className="cart-btn" onClick={handleCart} title="Shopping Cart">
@@ -399,33 +474,38 @@ const Navbar = () => {
                 </button>
               </div>
               <div className="store-submenu-items">
-                <a 
-                  href="/" 
+                <Link 
+                  to="/" 
                   className="store-submenu-item home-item"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.location.href = '/';
-                    setActiveBottomMenu(null);
-                  }}
+                  onClick={() => setActiveBottomMenu(null)}
                 >
                   <span className="submenu-icon">🏠</span>
                   <span>Home</span>
-                </a>
+                </Link>
                 {storeSubmenuItems.map((item, index) => (
-                  <a
+                  <Link
                     key={index}
-                    href={item.link}
+                    to={item.link}
                     className="store-submenu-item"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleStoreMenuItem(item);
-                    }}
+                    onClick={() => setActiveBottomMenu(null)}
                   >
                     <span className="submenu-icon">{item.icon}</span>
                     <span>{item.text}</span>
                     <i className="bi bi-chevron-right"></i>
-                  </a>
+                  </Link>
                 ))}
+                {/* Admin Link in Store Submenu */}
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="store-submenu-item admin-item"
+                    onClick={() => setActiveBottomMenu(null)}
+                  >
+                    <span className="submenu-icon">⚙️</span>
+                    <span>Admin Panel</span>
+                    <i className="bi bi-chevron-right"></i>
+                  </Link>
+                )}
               </div>
             </div>
           )}
@@ -533,23 +613,52 @@ const Navbar = () => {
             </button>
           </div>
 
+          {/* User Info Section */}
+          <div className="mobile-user-section">
+            {user ? (
+              <div className="mobile-user-info">
+                <i className="bi bi-person-circle"></i>
+                <div className="mobile-user-details">
+                  <strong>{user.name}</strong>
+                  <small>{user.email}</small>
+                  {isAdmin && <span className="mobile-admin-badge">Admin</span>}
+                </div>
+                <button className="mobile-logout-btn" onClick={logout}>
+                  <i className="bi bi-box-arrow-right"></i>
+                </button>
+              </div>
+            ) : (
+              <button 
+                className="mobile-login-btn"
+                onClick={() => { handleLoginClick(); closeMenu(); }}
+              >
+                <i className="bi bi-box-arrow-in-right"></i>
+                <span>Login</span>
+              </button>
+            )}
+          </div>
+
           {/* Mobile Navigation Items */}
           <div className="mobile-nav-items">
             {navItems.map((item, index) => (
-              <a
+              <Link
                 key={index}
-                href={item.link}
+                to={item.link}
                 className="mobile-nav-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.location.href = item.link;
-                  closeMenu();
-                }}
+                onClick={closeMenu}
               >
                 <span>{item.text}</span>
                 <i className="bi bi-chevron-right"></i>
-              </a>
+              </Link>
             ))}
+            
+            {/* Admin Link in Mobile Menu */}
+            {isAdmin && (
+              <Link to="/admin" className="mobile-nav-link admin-link" onClick={closeMenu}>
+                <span>ADMIN PANEL</span>
+                <i className="bi bi-chevron-right"></i>
+              </Link>
+            )}
           </div>
 
           {/* Country Selection in Mobile Menu */}
@@ -581,12 +690,12 @@ const Navbar = () => {
                 placeholder="Search for products..."
                 className="mobile-search-expanded-input"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyPress={handleKeyPress}
               />
               <button 
                 className="mobile-search-expanded-btn"
-                onClick={handleSearch}
+                onClick={() => { handleSearch(); closeMenu(); }}
                 disabled={!searchQuery.trim()}
               >
                 <i className="bi bi-search"></i>
@@ -599,35 +708,14 @@ const Navbar = () => {
               <button className="suggestion-chip" onClick={() => setSearchQuery('Suits')}>Suits</button>
             </div>
           </div>
-
-          {/* Account Section in Mobile Menu */}
-          <div className="mobile-account-section">
-            <button 
-              className="mobile-account-btn"
-              onClick={() => { handleUserAction(); closeMenu(); }}
-            >
-              <div className="account-btn-content">
-                <i className="bi bi-person-circle"></i>
-                <div className="account-btn-info">
-                  <span className="account-btn-title">
-                    {isLoggedIn ? 'My Account' : 'Login / Sign Up'}
-                  </span>
-                  <span className="account-btn-subtitle">
-                    {isLoggedIn ? 'View profile & orders' : 'Access your account'}
-                  </span>
-                </div>
-              </div>
-              <i className="bi bi-chevron-right"></i>
-            </button>
-          </div>
         </div>
       </div>
 
-      {/* Sign Up Modal */}
-      <SignUpModal
-        isOpen={showSignUpModal}
-        onClose={closeSignUpModal}
-        onSignUpSuccess={handleSignUpSuccess}
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={closeLoginModal}
+        onLoginSuccess={handleLoginSuccess}
       />
 
       {/* Cart Modal */}

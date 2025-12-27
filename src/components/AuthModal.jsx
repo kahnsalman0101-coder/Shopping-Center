@@ -106,7 +106,7 @@ function AuthModal({ onClose, onLoginSuccess }) {
 
         <div className="auth-header">
           <h2>{isLogin ? 'Welcome Back! 👋' : 'Create Account ✨'}</h2>
-          <p>{isLogin ? 'Sign in to your account' : 'Join FashionHub today'}</p>
+          <p>{isLogin ? 'Sign in to your account' : 'Join Asim Jofa today'}</p>
         </div>
 
         {/* Social Login Buttons */}

@@ -1,9 +1,4 @@
-/* ============================================
-   ASIM JOFA - LUXURY NAVBAR CSS
-============================================ */
-
 :root {
-    /* Primary Colors - Matching Asim Jofa */
     --aj-primary: #000000;
     --aj-secondary: #8B4513;
     --aj-gold: #B8860B;
@@ -14,35 +9,28 @@
     --aj-light-gray: #E5E5E5;
     --aj-border: #DDDDDD;
     
-    /* Typography */
     --aj-font-heading: 'Playfair Display', serif;
     --aj-font-body: 'Montserrat', sans-serif;
     
-    /* Spacing */
     --aj-spacing-xs: 0.25rem;
     --aj-spacing-sm: 0.5rem;
     --aj-spacing-md: 1rem;
     --aj-spacing-lg: 1.5rem;
     --aj-spacing-xl: 2rem;
     
-    /* Transitions */
     --aj-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     
-    /* Shadows */
     --aj-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
     --aj-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
     --aj-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
     
-    /* Z-index layers */
     --z-navbar: 1000;
     --z-mobile-menu: 999;
     --z-dropdown: 1001;
     --z-overlay: 998;
 }
 
-/* ============================================
-   RESET & BASE STYLES
-============================================ */
+
 * {
     margin: 0;
     padding: 0;
@@ -55,9 +43,7 @@ body {
     overflow-x: hidden;
 }
 
-/* ============================================
-   MAIN NAVBAR CONTAINER
-============================================ */
+
 .navbar {
     background-color: var(--aj-white);
     border-bottom: 1px solid var(--aj-light-gray);
@@ -87,9 +73,7 @@ body {
     height: 70px;
 }
 
-/* ============================================
-   LEFT SECTION - LOGO
-============================================ */
+
 .navbar-left {
     flex: 0 0 auto;
     display: flex;
@@ -129,9 +113,7 @@ body {
     margin-top: 2px;
 }
 
-/* ============================================
-   CENTER SECTION - NAVIGATION MENU (DESKTOP)
-============================================ */
+
 .navbar-center {
     flex: 1;
     display: flex;
@@ -313,7 +295,7 @@ body {
 .search-expanded {
     position: absolute;
     top: calc(100% + 8px);
-    right: 0;
+    left: -130px;
     width: 0;
     overflow: hidden;
     opacity: 0;
@@ -2167,4 +2149,285 @@ body {
 .mobile-country-option i.bi-check {
   color: var(--aj-gold);
   font-size: 0.9rem;
+}/* User Dropdown Styles */
+.user-dropdown {
+  position: relative;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 280px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  z-index: 1000;
+  margin-top: 10px;
+  display: none;
+}
+
+.user-dropdown:hover .user-dropdown-menu {
+  display: block;
+}
+
+.user-dropdown-header {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-info i {
+  font-size: 40px;
+  color: #666;
+}
+
+.user-info div {
+  flex: 1;
+}
+
+.user-info strong {
+  display: block;
+  font-size: 16px;
+  color: #333;
+}
+
+.user-info small {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.admin-badge {
+  display: inline-block;
+  background: #dc3545;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+.user-dropdown-items {
+  padding: 10px 0;
+}
+
+.user-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  background: none;
+  text-align: left;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.user-dropdown-item:hover {
+  background: #f8f9fa;
+}
+
+.dropdown-icon {
+  font-size: 16px;
+  min-width: 24px;
+}
+
+.user-name-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #28a745;
+  color: white;
+  font-size: 10px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Admin Link Styles */
+.nav-link.admin-link {
+  color: #dc3545;
+  font-weight: bold;
+  position: relative;
+}
+
+.nav-link.admin-link:hover {
+  color: #c82333;
+}
+
+.nav-link.admin-link::after {
+  content: '⚙️';
+  margin-left: 5px;
+  font-size: 12px;
+}
+
+/* Mobile User Section */
+.mobile-user-section {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.mobile-user-info i {
+  font-size: 50px;
+  color: #666;
+}
+
+.mobile-user-details {
+  flex: 1;
+}
+
+.mobile-user-details strong {
+  display: block;
+  font-size: 16px;
+  color: #333;
+}
+
+.mobile-user-details small {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.mobile-admin-badge {
+  display: inline-block;
+  background: #dc3545;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  margin-top: 5px;
+}
+
+.mobile-logout-btn {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.mobile-logout-btn:hover {
+  color: #dc3545;
+}
+
+.mobile-login-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.mobile-login-btn:hover {
+  background: #0056b3;
+}
+
+.mobile-login-btn i {
+  font-size: 20px;
+}
+
+/* Mobile Admin Link */
+.mobile-nav-link.admin-link {
+  color: #dc3545;
+  font-weight: bold;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.mobile-nav-link.admin-link span {
+  position: relative;
+}
+
+.mobile-nav-link.admin-link span::after {
+  content: '⚙️';
+  margin-left: 8px;
+  font-size: 14px;
+}
+
+/* Store Submenu Admin Item */
+.store-submenu-item.admin-item {
+  background: rgba(220, 53, 69, 0.1);
+  border-left: 3px solid #dc3545;
+}
+
+.store-submenu-item.admin-item .submenu-icon {
+  color: #dc3545;
+}/* Login Button Styles */
+.icon-btn.login-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.icon-btn.login-btn:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+.icon-btn.login-btn i {
+  font-size: 16px;
+}
+
+.login-text {
+  font-size: 14px;
+}
+
+/* Mobile Login Button */
+.mobile-login-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 15px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.mobile-login-btn:hover {
+  background: #0056b3;
+}
+
+.mobile-login-btn i {
+  font-size: 20px;
 }
