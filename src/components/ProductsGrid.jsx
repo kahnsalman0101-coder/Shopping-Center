@@ -37,7 +37,7 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
       baseDiscountedPricePKR: 5250,
       fabricType: "SILK",
       pieces: 2,
-      imageUrl: "/dress/download (1).jpeg",
+      imageUrl: "/dress/268A6451.webp",
       category: "silk",
       description: "Elegant silk dress with intricate embroidery"
     },
@@ -49,7 +49,7 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
       baseDiscountedPricePKR: 2450,
       fabricType: "COTTON",
       pieces: 3,
-      imageUrl: "/dress/download (1).jpeg",
+      imageUrl: "/dress/268A7929.webp",
       category: "cotton",
       description: "Comfortable cotton fabric with beautiful prints"
     },
@@ -61,7 +61,7 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
       baseDiscountedPricePKR: 4550,
       fabricType: "CHIFFON",
       pieces: 2,
-      imageUrl: "/dress/download (1).jpeg",
+      imageUrl: "/dress/AJSO-60-1.webp",
       category: "chiffon",
       description: "Stylish chiffon party wear collection"
     },
@@ -73,7 +73,7 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
       baseDiscountedPricePKR: 6650,
       fabricType: "VELVET",
       pieces: 3,
-      imageUrl: "/WinterSlider/500x500-aura_cd6eb830-2078-42c0-9b7b-599a2db95213_600x600.webp",
+      imageUrl: "/dress/AJSO-84.webp",
       category: "velvet",
       description: "Luxurious velvet fabric for winter season"
     },
@@ -85,7 +85,7 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
       baseDiscountedPricePKR: 8400,
       fabricType: "ORGANZA",
       pieces: 2,
-      imageUrl: "/dress/download (1).jpeg",
+      imageUrl: "/dress/AJSO-84.webp",
       category: "organza",
       description: "Exquisite organza fabric for bridal wear"
     },
@@ -97,10 +97,23 @@ const ProductsGrid = ({ category = 'all', isOnSale = false }) => {
       baseDiscountedPricePKR: 1960,
       fabricType: "LAWN",
       pieces: 3,
-      imageUrl: "/dress/download (1).jpeg",
+      imageUrl: "/dress/DSCF5102.webp",
       category: "lawn",
       description: "Light and breezy lawn fabric for summer"
-    }
+    },
+     {
+      id: 3,
+      productCode: "AJLFC-10",
+      productName: "COTTON PRINT UNSTITCHED",
+      basePricePKR: 3500,
+      baseDiscountedPricePKR: 2450,
+      fabricType: "COTTON",
+      pieces: 3,
+      imageUrl: "/dress/268A7929.webp",
+      category: "cotton",
+      description: "Comfortable cotton fabric with beautiful prints"
+    },
+    
   ];
 
   // Clear corrupted data and reset to initial products
