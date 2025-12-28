@@ -130,3 +130,86 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+/* FORCE ORIGINAL COLORS ON ALL DEVICES */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  color-scheme: light only !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+body {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Override ALL dark mode settings */
+@media (prefers-color-scheme: dark) {
+  :root,
+  body,
+  .navbar,
+  .mobile-menu-content,
+  .cart-item,
+  .cart-summary,
+  .checkout-modal,
+  .mobile-bottom-menu,
+  .mobile-shipping-bottom,
+  .mobile-country-dropdown,
+  .country-dropdown-item,
+  .mobile-nav-link,
+  .mobile-search-expanded-input {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border-color: #E5E5E5 !important;
+  }
+  
+  /* Specific element overrides */
+  .navbar {
+    background-color: #FFFFFF !important;
+    border-bottom-color: #E5E5E5 !important;
+  }
+  
+  .mobile-menu-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%) !important;
+  }
+  
+  .mobile-nav-link,
+  .mobile-search-expanded-input,
+  .country-dropdown-item {
+    color: #000000 !important;
+  }
+  
+  .mobile-bottom-menu {
+    background-color: #FFFFFF !important;
+  }
+  
+  .menu-item-text {
+    color: #000000 !important;
+  }
+  
+  /* Gold colors should remain gold */
+  .nav-link:hover,
+  .mobile-nav-link i,
+  .mobile-bottom-menu-item:hover .menu-item-text,
+  .menu-main-item-text:hover {
+    color: #B8860B !important;
+  }
+  
+  /* Borders should remain original */
+  .navbar {
+    border-bottom-color: #E5E5E5 !important;
+  }
+  
+  .mobile-menu-content {
+    border: none !important;
+  }
+}

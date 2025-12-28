@@ -1,3 +1,113 @@
+/* ============================================
+   FORCE ORIGINAL COLORS - PREVENT MOBILE CHANGES
+   ============================================ */
+
+/* Disable all browser color adjustments */
+html {
+  color-scheme: light only !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+  color-adjust: exact !important;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-adjust: exact !important;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+/* Reset all colors to original */
+body {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Completely disable dark mode */
+@media (prefers-color-scheme: dark) {
+  :root,
+  body,
+  .navbar,
+  .navbar-container,
+  .navbar-left,
+  .navbar-center,
+  .navbar-right,
+  .navbar-logo,
+  .nav-links-container,
+  .nav-link,
+  .mobile-menu-content,
+  .mobile-menu-header,
+  .mobile-nav-items,
+  .mobile-nav-link,
+  .mobile-bottom-menu,
+  .mobile-bottom-menu-item,
+  .mobile-bottom-menu-main,
+  .mobile-bottom-menu-main-item,
+  .cart-item,
+  .cart-summary,
+  .checkout-modal,
+  .mobile-country-dropdown,
+  .country-dropdown-item,
+  .shipping-dropdown-content,
+  .search-expanded,
+  .mobile-search-wrapper,
+  .coupon-section,
+  .order-summary-modal {
+    background-color: #FFFFFF !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    border-color: #E5E5E5 !important;
+  }
+  
+  /* Specific overrides */
+  .navbar {
+    background-color: #FFFFFF !important;
+    border-bottom-color: #E5E5E5 !important;
+  }
+  
+  .mobile-menu-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%) !important;
+  }
+  
+  .mobile-nav-link,
+  .mobile-search-expanded-input,
+  .country-dropdown-item,
+  .search-expanded-input,
+  .form-input,
+  .coupon-input {
+    color: #000000 !important;
+  }
+  
+  .mobile-bottom-menu {
+    background-color: #FFFFFF !important;
+  }
+  
+  .menu-item-text,
+  .menu-main-item-text {
+    color: #000000 !important;
+  }
+}
+
+/* Disable any color inversion */
+@media (inverted-colors: inverted) {
+  * {
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+}
+
+/* Remove any backdrop filters that might cause issues */
+* {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+
+
 * {
     margin: 0;
     padding: 0;
